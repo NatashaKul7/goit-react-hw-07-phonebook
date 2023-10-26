@@ -3,7 +3,7 @@ import { FilterBox } from './Filter.styled';
 export const Filter = ({ name, onChange }) => {
   return (
     <FilterBox>
-      <p>Find contact by name</p>
+      <h3>Find contact by name</h3>
       <input type="text" name="name" value={name} onChange={onChange} />
     </FilterBox>
   );

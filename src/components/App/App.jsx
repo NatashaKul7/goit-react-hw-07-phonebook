@@ -14,9 +14,10 @@ export function App() {
   const dispatch = useDispatch();
 
   const contacts = useSelector(state => state.contacts.contacts.item);
-  const filter = useSelector(state => state.contacts.filter);
   const isLoading = useSelector(state => state.contacts.contacts.isLoading);
   const error = useSelector(state => state.contacts.contacts.error);
+  const filter = useSelector(state => state.contacts.filter);
+  // console.log(contacts);
 
   useEffect(() => {
     dispatch(requestContacts());
@@ -36,7 +37,7 @@ export function App() {
   };
 
   const handleFilterChange = e => {
-    dispatch(contactsReducer.filterContact(e.currentTarget.value));
+    dispatch(contactsReducer(e.currentTarget.value));
   };
 
   const filterContacts = () => {
@@ -49,9 +50,8 @@ export function App() {
     <Container>
       <Form handleAddContact={handleAddContact} />
       <h2>Contacts</h2>
-      {contacts.length === 0 ? (
-        <h3>There are no any contacts here</h3>
-      ) : (
+      {isLoading && !error && <h3>Loading...</h3>}
+      {contacts.length !== 0 && (
         <>
           <Filter onChange={handleFilterChange} filter={filter} />
           <Contacts contacts={filterContacts()} />

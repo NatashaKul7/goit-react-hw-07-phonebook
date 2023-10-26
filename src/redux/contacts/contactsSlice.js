@@ -13,68 +13,76 @@ const INITIAL_STATE = {
   filter: '',
 };
 
+function isRejectedAction(action) {
+  return action.type.endsWith('rejected');
+}
+function isPendingAction(action) {
+  return action.type.endsWith('pending');
+}
+
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: INITIAL_STATE,
   reducers: {
-    // addContact(state, action) {
-    //   state.contacts = [...state.contacts, action.payload];
-    // },
-    // deleteContact(state, action) {
-    //   state.contacts = state.contacts.filter(
-    //     contact => contact.id !== action.payload
-    //   );
-    // },
-
     filterContact(state, action) {
       state.filter = action.payload;
     },
   },
-  extraReduсers: builder =>
+  extraReducers: builder =>
     builder
-      .addCase(requestContacts.pending, (state, action) => {
-        state.isLoading = true;
-        state.error = null;
-      })
+      // .addCase(requestContacts.pending, (state, action) => {
+      //   state.contacts.isLoading = true;
+      //   state.contacts.error = null;
+      // })
       .addCase(requestContacts.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.contacts.isLoading = false;
         state.contacts.item = action.payload;
       })
-      .addCase(requestContacts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
+      // .addCase(requestContacts.rejected, (state, action) => {
+      //   state.contacts.isLoading = false;
+      //   state.contacts.error = action.payload;
+      // })
 
       // Add contacts
 
-      .addCase(addContacts.pending, (state, action) => {
-        state.isLoading = true;
-        state.error = null;
-      })
+      // .addCase(addContacts.pending, (state, action) => {
+      //   state.contacts.isLoading = true;
+      //   state.contacts.error = null;
+      // })
       .addCase(addContacts.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.contacts.isLoading = false;
         state.contacts.item.push(action.payload);
       })
-      .addCase(addContacts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
+      // .addCase(addContacts.rejected, (state, action) => {
+      //   state.contacts.isLoading = false;
+      //   state.contacts.error = action.payload;
+      // })
 
       // Delete contacts
 
-      .addCase(deleteContacts.pending, (state, action) => {
-        state.isLoading = true;
-      })
+      // .addCase(deleteContacts.pending, (state, action) => {
+      //   state.contacts.isLoading = true;
+      // })
       .addCase(deleteContacts.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = null;
+        state.contacts.isLoading = false;
+        state.contacts.error = null;
         state.contacts.item = state.contacts.item.filter(
           contact => contact.id !== action.payload
         );
       })
-      .addCase(deleteContacts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
+      // .addCase(deleteContacts.rejected, (state, action) => {
+      //   state.contacts.isLoading = false;
+      //   state.contacts.error = action.payload;
+      // })
+
+      // скорочуємо код ред'юсерів
+
+      .addMatcher(isPendingAction, state => {
+        state.contacts.isLoading = true;
+      })
+      .addMatcher(isRejectedAction, (state, action) => {
+        state.contacts.isLoading = false;
+        state.contacts.error = action.payload;
       }),
 });
 
