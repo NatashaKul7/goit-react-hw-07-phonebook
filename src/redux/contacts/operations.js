@@ -1,20 +1,3 @@
-// import {
-//   fetchContactsError,
-//   fetchContactsRequest,
-//   fetchContactsSuccess,
-// } from './contactsActions';
-
-// export const fetchContacts = () => async dispatch => {
-//   dispatch(fetchContactsRequest());
-
-//   try {
-//     const contacts = await fetchContacts();
-//     dispatch(fetchContactsSuccess(contacts));
-//   } catch (error) {
-//     dispatch(fetchContactsError(error));
-//   }
-// };
-
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   fetchAddContacts,
@@ -57,13 +40,3 @@ export const deleteContacts = createAsyncThunk(
     }
   }
 );
-
-// export async function fetchContacts() {
-//   const { data } = await axios.get('/contacts');
-//   return data;
-// }
-
-// const fetchContacts = createAsyncThunk('contacts/fetchContacts', async () => {
-//   const contacts = await fetchContacts();
-//   return contacts;
-// });

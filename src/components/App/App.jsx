@@ -1,14 +1,12 @@
-import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-// import { addContact, filterContact } from 'redux/contactsSlice';
+import { filterContact } from 'redux/contacts/contactsSlice';
 
 import { Container } from './App.styled';
 import { Form } from 'components/Form/Form';
 import { Contacts } from 'components/Contacts/Contacts';
 import { Filter } from 'components/Filter/Filter';
 import { useEffect } from 'react';
-import { addContacts, requestContacts } from 'redux/contacts/operations';
-import { contactsReducer } from 'redux/contacts/contactsSlice';
+import { requestContacts } from 'redux/contacts/operations';
 
 export function App() {
   const dispatch = useDispatch();
@@ -17,27 +15,13 @@ export function App() {
   const isLoading = useSelector(state => state.contacts.contacts.isLoading);
   const error = useSelector(state => state.contacts.contacts.error);
   const filter = useSelector(state => state.contacts.filter);
-  // console.log(contacts);
 
   useEffect(() => {
     dispatch(requestContacts());
   }, [dispatch]);
 
-  const handleAddContact = ({ name, number }) => {
-    if (contacts.find(contact => contact.name === name)) {
-      return alert(`Oops, the contact with name ${name} already exists`);
-    }
-    const newState = {
-      id: nanoid(),
-      name,
-      number,
-    };
-
-    dispatch(addContacts(newState));
-  };
-
-  const handleFilterChange = e => {
-    dispatch(contactsReducer(e.currentTarget.value));
+  const handleFilterChange = value => {
+    dispatch(filterContact(value));
   };
 
   const filterContacts = () => {
@@ -48,7 +32,7 @@ export function App() {
 
   return (
     <Container>
-      <Form handleAddContact={handleAddContact} />
+      <Form />
       <h2>Contacts</h2>
       {isLoading && !error && <h3>Loading...</h3>}
       {contacts.length !== 0 && (
